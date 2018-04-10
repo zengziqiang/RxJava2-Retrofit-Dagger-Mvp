@@ -4,9 +4,11 @@ import com.example.zengziqiang.rxjava2.service.SerciceApi;
 import com.example.zengziqiang.rxjava2.utils.OnListiner;
 import com.example.zengziqiang.rxjava2.utils.RetrofitHelper;
 
+import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
 import io.reactivex.Flowable;
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
@@ -41,5 +43,31 @@ public class LoginModelImpl implements LoginModel {
                         onListiner.onFailure(throwable);
                     }
                 });
+    }
+
+    @Override
+    public void toLogin(String username, String password, final OnListiner onListiner) {
+        SerciceApi api = RetrofitHelper.getApi();
+        Flowable<String> stringFlowable = api.toLogin(username, password);
+        stringFlowable.doOnSubscribe(new Consumer<Subscription>() {
+            @Override
+            public void accept(Subscription subscription) throws Exception {
+                System.out.println("开始登陆");
+            }
+        }).subscribeOn(Schedulers.io())
+          .observeOn(AndroidSchedulers.mainThread())
+          .subscribe(new Consumer<String>() {
+            @Override
+            public void accept(String s) throws Exception {
+                onListiner.onSuccess(s);
+            }
+        }, new Consumer<Throwable>() {
+            @Override
+            public void accept(Throwable throwable) throws Exception {
+                onListiner.onFailure(throwable);
+            }
+        });
+
+
     }
 }

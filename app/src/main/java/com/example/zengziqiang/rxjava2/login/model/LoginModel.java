@@ -13,4 +13,6 @@ public interface LoginModel<T> {
 
 
     void getDatas(OnListiner<T> onListiner);
+
+    void toLogin(String username,String password,OnListiner<T> onListiner);
 }

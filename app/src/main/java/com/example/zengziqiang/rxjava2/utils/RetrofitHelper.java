@@ -20,14 +20,26 @@ public class RetrofitHelper {
     private static SerciceApi api;
 
     static {
-        initOkHttp();
+        //initOkHttp();
     }
 
+    //    private static void initOkHttp() {
+//        if (client == null) {
+//            synchronized (OkHttpClient.class) {
+//                if (client == null) {
+//                    client = new OkHttpClient.Builder().build();
+//
+//                }
+//            }
+//        }
+//    }
     private static void initOkHttp() {
         if (client == null) {
             synchronized (OkHttpClient.class) {
                 if (client == null) {
-                    client = new OkHttpClient.Builder().build();
+                    client = new OkHttpClient();
+                    //todo  加拦截器
+                    client.interceptors().add(new SaveCookiesInterceptor());
                 }
             }
         }
@@ -45,9 +57,12 @@ public class RetrofitHelper {
     }
 
     private static <T> T create(Class<T> tClass, String baseUrl) {
-//                .client(client)//网络请求客户端为okhttp
+        OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(new SaveCookiesInterceptor()).build();
+
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
+                .client(okHttpClient)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())//将Callable接口转换成Observable接口
                 .addConverterFactory(ScalarsConverterFactory.create())//string数据转换
                 .build();

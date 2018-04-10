@@ -5,13 +5,11 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.example.zengziqiang.rxjava2.R;
 
-import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
-import okhttp3.OkHttpClient;
 
 public class Test01Activity extends AppCompatActivity {
 
@@ -36,17 +34,25 @@ public class Test01Activity extends AppCompatActivity {
                 System.out.println("subscribe====3");
                 emitter.onNext(4);
                 System.out.println("subscribe====4");
+
             }
         }).subscribe(new Observer<Integer>() { // 第二步：初始化Observer观察者
+
+            private Disposable deprecated;
+
             // 第三步：订阅
             @Override
             public void onSubscribe(Disposable d) {
                 System.out.println("onSubscribe====" + d);
+                deprecated = d;
             }
 
             @Override
             public void onNext(Integer integer) {
                 System.out.println("onNext====" + integer);
+                if (integer == 2) {
+                    deprecated.dispose();
+                }
             }
 
             @Override
@@ -59,9 +65,6 @@ public class Test01Activity extends AppCompatActivity {
                 System.out.println("onComplete====");
             }
         });
-
-
-
 
     }
 

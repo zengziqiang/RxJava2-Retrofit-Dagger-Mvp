@@ -37,5 +37,23 @@ public class LoginPresenterImpl implements LoginPresenter {
             }
         });
     }
+
+    @Override
+    public void toLogin(String username, String password) {
+        loginModel.toLogin(username, password, new OnListiner() {
+            @Override
+            public void onSuccess(Object o) {
+                System.out.println("请求成功的数据" + o.toString());
+            }
+
+            @Override
+            public void onFailure(Throwable throwable) {
+                throwable.printStackTrace();
+                System.out.println("请求失败的数据" + throwable.getMessage());
+            }
+        });
+    }
+
+
 }
 

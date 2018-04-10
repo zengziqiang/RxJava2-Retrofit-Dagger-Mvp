@@ -9,6 +9,7 @@ package com.example.zengziqiang.rxjava2.utils;
 
 public class URL_Constants {
 
-    public static final String API_BASE = "http://apicloud.mob.com/";
+    public static final String API_BASE = "http://120.78.162.216:8080/";
+//    public static final String API_BASE = "http://apicloud.mob.com/";
 
 }

@@ -15,7 +15,10 @@ public interface SerciceApi {
 
     //天气请求
     @GET("v1/weather/query")
-    public Flowable<String> getWeather(@Query("key") String key,@Query("city") String city,@Query("province") String province);
+    public Flowable<String> getWeather(@Query("key") String key, @Query("city") String city, @Query("province") String province);
 
+
+    @GET("api/cust/login.json")
+    public Flowable<String> toLogin(@Query("loginName") String loginName, @Query("loginPwd") String loginPwd);
 
 }

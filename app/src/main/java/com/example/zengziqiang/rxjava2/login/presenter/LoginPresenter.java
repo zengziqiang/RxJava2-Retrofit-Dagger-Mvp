@@ -13,4 +13,6 @@ public interface LoginPresenter{
 
     void getDatas();
 
+    void toLogin(String username,String password);
+
 }
